@@ -1,36 +1,41 @@
-This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-app`](https://nextjs.org/docs/app/api-reference/cli/create-next-app).
+# Maya Law Practice
 
-## Getting Started
+Marketing site for Maya Law Practice (MLP) — a boutique civil law firm in Ottawa, Ontario.
 
-First, run the development server:
+Built with Next.js (App Router), React, Tailwind CSS v4, and GSAP. The site is a
+static export, deployed to Cloudflare Pages.
+
+## Develop
 
 ```bash
+npm install
 npm run dev
-# or
-yarn dev
-# or
-pnpm dev
-# or
-bun dev
 ```
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+Note: `next dev` does not hydrate reliably on real mobile devices over a LAN.
+To test on a phone, use the production preview below.
 
-You can start editing the page by modifying `app/page.tsx`. The page auto-updates as you edit the file.
+## Build & preview the static export
 
-This project uses [`next/font`](https://nextjs.org/docs/app/building-your-application/optimizing/fonts) to automatically optimize and load [Geist](https://vercel.com/font), a new font family for Vercel.
+```bash
+npm run build      # outputs ./out
+npm run preview    # serves ./out at http://localhost:3000 (also on your network IP)
+```
 
-## Learn More
+## Deploy to Cloudflare Pages
 
-To learn more about Next.js, take a look at the following resources:
+**CLI**
 
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
+```bash
+npm run deploy     # next build + wrangler pages deploy out
+```
 
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js) - your feedback and contributions are welcome!
+**Git integration (dashboard)**
 
-## Deploy on Vercel
+- Framework preset: Next.js (Static HTML Export)
+- Build command: `npx next build`
+- Build output directory: `out`
 
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
-
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/app/building-your-application/deploying) for more details.
+`next.config.ts` sets `output: "export"` and `images.unoptimized: true`, so the
+build produces a fully static site in `out/`. Caching and security headers live in
+`public/_headers`.
