@@ -55,8 +55,8 @@ export function Navigation() {
               className="navigation__logo"
               src="/img/logo.png"
               alt="Maya Law Practice"
-              width={2238}
-              height={819}
+              width={826}
+              height={302}
               priority
             />
           </a>
