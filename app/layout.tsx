@@ -142,6 +142,9 @@ const jsonLd = {
     "@type": "Person",
     name: "Maya Hussein",
     jobTitle: "Principal Lawyer",
+    sameAs: [
+      "https://lsodirectory.lso.ca/en-US/licensee-detail/?lawsocietynumber=94837E",
+    ],
   },
   knowsAbout: [
     "Real Estate Law",
