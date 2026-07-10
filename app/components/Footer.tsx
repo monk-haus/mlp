@@ -29,7 +29,8 @@ export function Footer() {
         <div className="footer__directions">
           <div>
             <p>
-              MLP is a boutique civil practice serving clients across Ontario.
+              MLP is a boutique Ottawa civil practice serving clients across
+              Ontario.
               Consultations are available by appointment — reach out to discuss
               your matter directly with the lawyer who will handle it.
             </p>

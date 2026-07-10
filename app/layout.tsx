@@ -89,7 +89,6 @@ export const metadata: Metadata = {
   icons: {
     icon: [
       { url: "/favicon.ico", sizes: "any" },
-      { url: "/favicon.svg", type: "image/svg+xml" },
       { url: "/favicon-96x96.png", type: "image/png", sizes: "96x96" },
     ],
     apple: [{ url: "/apple-touch-icon.png", sizes: "180x180" }],
@@ -105,7 +104,7 @@ export const viewport: Viewport = {
 
 const jsonLd = {
   "@context": "https://schema.org",
-  "@type": "LegalService",
+  "@type": ["LegalService", "Attorney"],
   "@id": `${SITE_URL}/#legalservice`,
   name: "Maya Law Practice",
   alternateName: "MLP",
@@ -124,10 +123,21 @@ const jsonLd = {
     postalCode: "K1C 7A8",
     addressCountry: "CA",
   },
-  areaServed: {
-    "@type": "AdministrativeArea",
-    name: "Ontario, Canada",
+  geo: {
+    "@type": "GeoCoordinates",
+    latitude: 45.4626395,
+    longitude: -75.5095832,
   },
+  areaServed: [
+    {
+      "@type": "City",
+      name: "Ottawa",
+    },
+    {
+      "@type": "AdministrativeArea",
+      name: "Ontario, Canada",
+    },
+  ],
   founder: {
     "@type": "Person",
     name: "Maya Hussein",

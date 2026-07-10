@@ -56,7 +56,7 @@ export function Hero() {
 
           <div className="hero__text">
             <p className="paragraph hero__paragraph">
-              MLP is a boutique Ontario practice built on a simple principle:
+              MLP is a boutique Ottawa practice built on a simple principle:
               the lawyer you meet is the lawyer who handles your matter. No
               layers, no handoffs — just clear, honest counsel and an advocate
               who is personally invested in your result, across nearly every

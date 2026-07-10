@@ -38,7 +38,13 @@ export function Intro() {
 
   return (
     <section className="intro" id="intro" ref={root}>
-      <img className="intro__logo" src="/img/logo.png" alt="Maya Law Practice" />
+      <img
+        className="intro__logo"
+        src="/img/logo.png"
+        alt="Maya Law Practice"
+        width={826}
+        height={302}
+      />
       <div className="intro__scroll">
         <div className="hero__scroll">
           <span className="hero__scroll-text paragraph">Scroll</span>

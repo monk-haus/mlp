@@ -19,7 +19,14 @@ export function About() {
 
         <div className="about__media-container">
           <figure className="about__media-wrapper">
-            <img className="about__media" src="/img/maya.jpg" alt="Maya Hussein" />
+            <img
+              className="about__media"
+              src="/img/maya.webp"
+              alt="Maya Hussein"
+              width={1200}
+              height={1670}
+              loading="lazy"
+            />
           </figure>
         </div>
 

@@ -101,7 +101,7 @@ export function BioModal() {
         <span>Read more</span>
       </button>
 
-      {mounted && createPortal(overlay, document.body)}
+      {mounted ? createPortal(overlay, document.body) : overlay}
     </>
   );
 }
