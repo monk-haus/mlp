@@ -752,6 +752,10 @@ main {
     font-weight: 400
 }
 
+.link__plain--static {
+    cursor: default
+}
+
 .navigation {
     align-items: center;
     display: none;

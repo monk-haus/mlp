@@ -24,6 +24,9 @@ export function Footer() {
               <span>T 613-862-3449</span>
             </a>
           </div>
+          <div className="link-container">
+            <span className="link__plain link__plain--static">F 343-633-6512</span>
+          </div>
         </div>
 
         <div className="footer__directions">

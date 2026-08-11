@@ -113,6 +113,7 @@ const jsonLd = {
   logo: `${SITE_URL}/img/logo.png`,
   image: `${SITE_URL}/img/og-image.png`,
   telephone: "+1-613-862-3449",
+  faxNumber: "+1-343-633-6512",
   email: "mlp@mlawpractice.com",
   priceRange: "$$",
   address: {
