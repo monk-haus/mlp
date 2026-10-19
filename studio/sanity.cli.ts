@@ -7,6 +7,7 @@ export default defineCliConfig({
   },
   studioHost: "mayalawpractice",
   deployment: {
+    appId: "f2ti80mx3m61hdcd26yxndku",
     autoUpdates: true,
   },
 });
