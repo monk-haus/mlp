@@ -1,47 +1,61 @@
-export function Footer() {
+import { StyledHeadingWords } from "./StyledHeading";
+import { telHref } from "../lib/phone";
+import type { HomePage, SiteSettings } from "../sanity/types";
+
+export function Footer({
+  content,
+  settings,
+}: {
+  content: HomePage["contact"];
+  settings: SiteSettings;
+}) {
+  const { address } = settings;
+
   return (
     <footer className="footer index-footer" id="footer">
       <div className="footer__content">
         <h2 className="h2 footer__title">
-          <span className="italic">Let&rsquo;s </span>
-          <span>talk </span>
+          <StyledHeadingWords value={content.heading} />
         </h2>
 
         <div className="footer__contact">
           <div className="footer__address">
-            <p>MAYA LAW PRACTICE</p>
-            <p>1742 Silver Bark Ave</p>
-            <p>Ottawa, ON K1C 7A8</p>
-            <p>Canada</p>
+            <p>{settings.firmName.toUpperCase()}</p>
+            <p>{address.street}</p>
+            <p>
+              {address.city}, {address.region} {address.postalCode}
+            </p>
+            <p>{address.country}</p>
           </div>
           <div className="link-container">
-            <a className="link__plain" href="mailto:mlp@mlawpractice.com">
-              <span>E mlp@mlawpractice.com</span>
+            <a className="link__plain" href={`mailto:${settings.email}`}>
+              <span>E {settings.email}</span>
             </a>
           </div>
           <div className="link-container">
-            <a className="link__plain" href="tel:+16138623449">
-              <span>T 613-862-3449</span>
+            <a className="link__plain" href={telHref(settings.phone)}>
+              <span>T {settings.phone}</span>
             </a>
           </div>
-          <div className="link-container">
-            <span className="link__plain link__plain--static">F 343-633-6512</span>
-          </div>
+          {settings.fax && (
+            <div className="link-container">
+              <span className="link__plain link__plain--static">F {settings.fax}</span>
+            </div>
+          )}
         </div>
 
-        <div className="footer__directions">
-          <div>
-            <p>
-              MLP is a boutique Ottawa civil practice serving clients across
-              Ontario.
-              Consultations are available by appointment — reach out to discuss
-              your matter directly with the lawyer who will handle it.
-            </p>
+        {content.blurb && (
+          <div className="footer__directions">
+            <div>
+              <p>{content.blurb}</p>
+            </div>
           </div>
-        </div>
+        )}
 
         <div className="footer__bottom">
-          <p>© {new Date().getFullYear()} Maya Law Practice</p>
+          <p>
+            © {new Date().getFullYear()} {settings.firmName}
+          </p>
         </div>
       </div>
     </footer>

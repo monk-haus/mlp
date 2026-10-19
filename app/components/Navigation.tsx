@@ -4,6 +4,7 @@ import { useRef, useState } from "react";
 import Image from "next/image";
 import { useGSAP, ScrollTrigger } from "./gsap";
 import { lockBodyScroll, unlockBodyScroll } from "../lib/scrollLock";
+import { telHref } from "../lib/phone";
 
 const LINKS = [
   { label: "Expertise", href: "#expertise" },
@@ -11,7 +12,7 @@ const LINKS = [
   { label: "Contact", href: "#footer" },
 ];
 
-export function Navigation() {
+export function Navigation({ email, phone }: { email: string; phone: string }) {
   const nav = useRef<HTMLElement>(null);
   const [menuOpen, setMenuOpen] = useState(false);
 
@@ -102,8 +103,8 @@ export function Navigation() {
           ))}
         </ul>
         <div className="navigation__menu-contact">
-          <a href="mailto:mlp@mlawpractice.com">mlp@mlawpractice.com</a>
-          <a href="tel:+16138623449">613-862-3449</a>
+          <a href={`mailto:${email}`}>{email}</a>
+          <a href={telHref(phone)}>{phone}</a>
         </div>
       </div>
     </>

@@ -1,19 +1,28 @@
 import { Legend } from "./Legend";
 import { BioModal } from "./BioModal";
+import { StyledHeadingWords, headingText } from "./StyledHeading";
+import { croppedDimensions, imageUrl } from "../sanity/image";
+import type { HomePage } from "../sanity/types";
 
-export function About() {
+const PHOTO_WIDTH = 1200;
+
+export function About({ content }: { content: HomePage["about"] }) {
+  const { photo } = content;
+  const natural = croppedDimensions(photo);
+  const width = Math.min(PHOTO_WIDTH, natural.width);
+  const height = Math.round((natural.height / natural.width) * width);
+
   return (
     <section className="about" id="about">
       <div className="about__content">
         <div className="about__intro">
           <h2 className="h2">
-            <span className="italic">Meet </span>
-            <span>Maya </span>
+            <StyledHeadingWords value={content.heading} />
           </h2>
           <Legend
             className="about__legend"
-            first="Maya Hussein"
-            second="Principal Lawyer"
+            first={content.legend?.first}
+            second={content.legend?.second}
           />
         </div>
 
@@ -21,24 +30,25 @@ export function About() {
           <figure className="about__media-wrapper">
             <img
               className="about__media"
-              src="/img/maya.webp"
-              alt="Maya Hussein"
-              width={1200}
-              height={1670}
+              src={imageUrl(photo).width(width).height(height).url()}
+              alt={photo.alt ?? ""}
+              width={width}
+              height={height}
               loading="lazy"
             />
           </figure>
         </div>
 
         <div className="about__text-container">
-          <p className="paragraph about__text-body">
-            Maya Hussein is a dual-licensed lawyer with a background in U.S.
-            class-action litigation against large corporations. At MLP, she
-            handles most civil matters for Ontario clients and offers
-            straightforward advice and direct access throughout.
-          </p>
+          <p className="paragraph about__text-body">{content.summary}</p>
           <div className="about__link">
-            <BioModal />
+            <BioModal
+              label={content.linkLabel ?? "Read more"}
+              heading={content.bioHeading}
+              role={content.bioRole}
+              paragraphs={content.bio ?? []}
+              ariaLabel={`About ${headingText(content.bioHeading)}`}
+            />
           </div>
         </div>
       </div>
