@@ -5,18 +5,21 @@ import { About } from "./components/About";
 import { Expertise } from "./components/Expertise";
 import { Panes } from "./components/Panes";
 import { Footer } from "./components/Footer";
+import { getHomePage, getSiteSettings } from "./sanity/queries";
 
-export default function Home() {
+export default async function Home() {
+  const [page, settings] = await Promise.all([getHomePage(), getSiteSettings()]);
+
   return (
     <>
-      <Navigation />
+      <Navigation email={settings.email} phone={settings.phone} />
       <main>
         <Intro />
-        <Hero />
-        <About />
-        <Expertise />
-        <Panes />
-        <Footer />
+        <Hero content={page.hero} />
+        <About content={page.about} />
+        <Expertise content={page.expertise} />
+        <Panes principles={page.principles ?? []} />
+        <Footer content={page.contact} settings={settings} />
       </main>
     </>
   );

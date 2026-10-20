@@ -4,8 +4,10 @@ import { useRef } from "react";
 import { gsap, useGSAP, SplitText } from "./gsap";
 import { Legend } from "./Legend";
 import { ArrowLink } from "./ArrowLink";
+import { StyledHeadingWords } from "./StyledHeading";
+import type { HomePage } from "../sanity/types";
 
-export function Hero() {
+export function Hero({ content }: { content: HomePage["hero"] }) {
   const root = useRef<HTMLElement>(null);
 
   useGSAP(
@@ -39,31 +41,23 @@ export function Hero() {
         <div className="hero__content-grid">
           <div className="hero__wrapper">
             <h1 className="h1 hero__headline h1--large">
-              <span className="hero__line">
-                <span className="hero__word italic">People </span>
-                <span className="hero__word">first, </span>
-              </span>
-              <span className="hero__line">
-                <span className="hero__word">always</span>
-              </span>
+              {content.headline.map((line) => (
+                <span key={line._key} className="hero__line">
+                  <StyledHeadingWords value={line} wordClassName="hero__word" />
+                </span>
+              ))}
             </h1>
             <Legend
               className="hero__legend"
-              first="Civil Litigation & Advocacy"
-              second="Ontario · California"
+              first={content.legend?.first}
+              second={content.legend?.second}
             />
           </div>
 
           <div className="hero__text">
-            <p className="paragraph hero__paragraph">
-              MLP is a boutique Ottawa practice built on a simple principle:
-              the lawyer you meet is the lawyer who handles your matter. No
-              layers, no handoffs — just clear, honest counsel and an advocate
-              who is personally invested in your result, across nearly every
-              civil need.
-            </p>
+            <p className="paragraph hero__paragraph">{content.intro}</p>
             <div className="hero__cta">
-              <ArrowLink href="#expertise">Areas of practice</ArrowLink>
+              <ArrowLink href="#expertise">{content.ctaLabel}</ArrowLink>
             </div>
           </div>
         </div>

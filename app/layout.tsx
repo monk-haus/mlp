@@ -1,6 +1,10 @@
 import type { Metadata, Viewport } from "next";
 import { Noto_Serif, Open_Sans, Source_Sans_3 } from "next/font/google";
 import "./globals.css";
+import { getSiteSettings } from "./sanity/queries";
+import { imageUrl } from "./sanity/image";
+import { internationalPhone } from "./lib/phone";
+import type { SiteSettings } from "./sanity/types";
 
 const notoSerif = Noto_Serif({
   variable: "--font-noto-serif",
@@ -23,78 +27,73 @@ const sourceSans = Source_Sans_3({
 });
 
 const SITE_URL = "https://mayalawpractice.com";
-const TITLE = "Maya Law Practice | Ottawa Civil Law Firm";
-const DESCRIPTION =
-  "Boutique civil law firm in Ottawa, Ontario. Real estate, business, commercial, immigration, and employment law — with direct access to the lawyer on your case.";
+const FALLBACK_OG_IMAGE = { url: "/img/og-image.png", width: 1200, height: 630 };
 
-export const metadata: Metadata = {
-  metadataBase: new URL(SITE_URL),
-  title: {
-    default: TITLE,
-    template: "%s | Maya Law Practice",
-  },
-  description: DESCRIPTION,
-  applicationName: "Maya Law Practice",
-  authors: [{ name: "Maya Hussein" }],
-  creator: "Maya Law Practice",
-  publisher: "Maya Law Practice",
-  keywords: [
-    "Ottawa lawyer",
-    "Ottawa law firm",
-    "Ontario civil law",
-    "real estate lawyer Ottawa",
-    "business lawyer",
-    "commercial law",
-    "immigration lawyer Ottawa",
-    "employment lawyer",
-    "boutique law firm",
-    "Maya Hussein",
-  ],
-  alternates: {
-    canonical: "/",
-  },
-  openGraph: {
-    type: "website",
-    locale: "en_CA",
-    url: SITE_URL,
-    siteName: "Maya Law Practice",
-    title: TITLE,
-    description: DESCRIPTION,
-    images: [
-      {
-        url: "/img/og-image.png",
-        width: 1200,
-        height: 630,
-        alt: "Maya Law Practice — Ottawa civil law firm",
-      },
-    ],
-  },
-  twitter: {
-    card: "summary_large_image",
-    title: TITLE,
-    description: DESCRIPTION,
-    images: ["/img/og-image.png"],
-  },
-  robots: {
-    index: true,
-    follow: true,
-    googleBot: {
+function ogImageFor(settings: SiteSettings) {
+  if (!settings.ogImage) return { ...FALLBACK_OG_IMAGE, alt: settings.firmName };
+  return {
+    url: imageUrl(settings.ogImage).width(1200).height(630).fit("crop").url(),
+    width: 1200,
+    height: 630,
+    alt: settings.ogImage.alt ?? settings.firmName,
+  };
+}
+
+export async function generateMetadata(): Promise<Metadata> {
+  const settings = await getSiteSettings();
+  const ogImage = ogImageFor(settings);
+
+  return {
+    metadataBase: new URL(SITE_URL),
+    title: {
+      default: settings.title,
+      template: `%s | ${settings.firmName}`,
+    },
+    description: settings.description,
+    applicationName: settings.firmName,
+    authors: [{ name: settings.principal.name }],
+    creator: settings.firmName,
+    publisher: settings.firmName,
+    keywords: settings.keywords,
+    alternates: {
+      canonical: "/",
+    },
+    openGraph: {
+      type: "website",
+      locale: "en_CA",
+      url: SITE_URL,
+      siteName: settings.firmName,
+      title: settings.title,
+      description: settings.description,
+      images: [ogImage],
+    },
+    twitter: {
+      card: "summary_large_image",
+      title: settings.title,
+      description: settings.description,
+      images: [ogImage.url],
+    },
+    robots: {
       index: true,
       follow: true,
-      "max-image-preview": "large",
-      "max-snippet": -1,
+      googleBot: {
+        index: true,
+        follow: true,
+        "max-image-preview": "large",
+        "max-snippet": -1,
+      },
     },
-  },
-  category: "Legal services",
-  icons: {
-    icon: [
-      { url: "/favicon.ico", sizes: "any" },
-      { url: "/favicon-96x96.png", type: "image/png", sizes: "96x96" },
-    ],
-    apple: [{ url: "/apple-touch-icon.png", sizes: "180x180" }],
-  },
-  manifest: "/manifest.webmanifest",
-};
+    category: "Legal services",
+    icons: {
+      icon: [
+        { url: "/favicon.ico", sizes: "any" },
+        { url: "/favicon-96x96.png", type: "image/png", sizes: "96x96" },
+      ],
+      apple: [{ url: "/apple-touch-icon.png", sizes: "180x180" }],
+    },
+    manifest: "/manifest.webmanifest",
+  };
+}
 
 export const viewport: Viewport = {
   themeColor: "#21314b",
@@ -102,66 +101,66 @@ export const viewport: Viewport = {
   initialScale: 1,
 };
 
-const jsonLd = {
-  "@context": "https://schema.org",
-  "@type": ["LegalService", "Attorney"],
-  "@id": `${SITE_URL}/#legalservice`,
-  name: "Maya Law Practice",
-  alternateName: "MLP",
-  description: DESCRIPTION,
-  url: SITE_URL,
-  logo: `${SITE_URL}/img/logo.png`,
-  image: `${SITE_URL}/img/og-image.png`,
-  telephone: "+1-613-862-3449",
-  faxNumber: "+1-343-633-6512",
-  email: "mlp@mlawpractice.com",
-  priceRange: "$$",
-  address: {
-    "@type": "PostalAddress",
-    streetAddress: "1742 Silver Bark Ave",
-    addressLocality: "Ottawa",
-    addressRegion: "ON",
-    postalCode: "K1C 7A8",
-    addressCountry: "CA",
-  },
-  geo: {
-    "@type": "GeoCoordinates",
-    latitude: 45.4626395,
-    longitude: -75.5095832,
-  },
-  areaServed: [
-    {
-      "@type": "City",
-      name: "Ottawa",
-    },
-    {
-      "@type": "AdministrativeArea",
-      name: "Ontario, Canada",
-    },
-  ],
-  founder: {
-    "@type": "Person",
-    name: "Maya Hussein",
-    jobTitle: "Principal Lawyer",
-    sameAs: [
-      "https://lsodirectory.lso.ca/en-US/licensee-detail/?lawsocietynumber=94837E",
-    ],
-  },
-  knowsAbout: [
-    "Real Estate Law",
-    "Business Law",
-    "Commercial Law",
-    "Transactional Law",
-    "Immigration Law",
-    "Employment Law",
-  ],
-};
+function structuredData(settings: SiteSettings) {
+  const { address, principal } = settings;
+  const hasGeo = address.latitude !== undefined && address.longitude !== undefined;
 
-export default function RootLayout({
+  return {
+    "@context": "https://schema.org",
+    "@type": ["LegalService", "Attorney"],
+    "@id": `${SITE_URL}/#legalservice`,
+    name: settings.firmName,
+    alternateName: "MLP",
+    description: settings.description,
+    url: SITE_URL,
+    logo: `${SITE_URL}/img/logo.png`,
+    image: new URL(ogImageFor(settings).url, SITE_URL).toString(),
+    telephone: internationalPhone(settings.phone),
+    ...(settings.fax && { faxNumber: internationalPhone(settings.fax) }),
+    email: settings.email,
+    priceRange: "$$",
+    address: {
+      "@type": "PostalAddress",
+      streetAddress: address.street,
+      addressLocality: address.city,
+      addressRegion: address.region,
+      postalCode: address.postalCode,
+      addressCountry: address.country === "Canada" ? "CA" : address.country,
+    },
+    ...(hasGeo && {
+      geo: {
+        "@type": "GeoCoordinates",
+        latitude: address.latitude,
+        longitude: address.longitude,
+      },
+    }),
+    areaServed: [
+      {
+        "@type": "City",
+        name: address.city,
+      },
+      {
+        "@type": "AdministrativeArea",
+        name: "Ontario, Canada",
+      },
+    ],
+    founder: {
+      "@type": "Person",
+      name: principal.name,
+      ...(principal.role && { jobTitle: principal.role }),
+      ...(principal.profileUrl && { sameAs: [principal.profileUrl] }),
+    },
+    knowsAbout: settings.practiceAreas ?? [],
+  };
+}
+
+export default async function RootLayout({
   children,
 }: Readonly<{
   children: React.ReactNode;
 }>) {
+  const settings = await getSiteSettings();
+
   return (
     <html
       lang="en-CA"
@@ -170,7 +169,7 @@ export default function RootLayout({
       <body>
         <script
           type="application/ld+json"
-          dangerouslySetInnerHTML={{ __html: JSON.stringify(jsonLd) }}
+          dangerouslySetInnerHTML={{ __html: JSON.stringify(structuredData(settings)) }}
         />
         {children}
       </body>
